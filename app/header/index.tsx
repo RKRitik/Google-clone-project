@@ -30,34 +30,8 @@ export default function Header() {
               {link.name}
             </a>
           ))}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="rounded-full p-[4px] hover:bg-slate-400/50 transition-all duration-300 ">
-                <Image
-                  src={"/9.png"}
-                  className="p-[4px]"
-                  alt="9dot"
-                  height={32}
-                  width={32}
-                />
-              </TooltipTrigger>
-              <TooltipContent className="bg-slate-800 border-none">
-                Google apps
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="flex items-center hover:ring-4 ring-slate-400/50 transition-all duration-300 justify-center h-[40px] p-[8px] w-[40px] rounded-full bg-violet-700 text-white font-semibold text-[15px]">
-                  R
-                </div>
-              </TooltipTrigger>
-              <TooltipContent className="bg-slate-800 border-none">
-                <GoogleAccountTooltipInfo />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <AllGoogleApps />
+          <CurrentUserInfo />
         </div>
       </div>
     </div>
@@ -70,5 +44,45 @@ function GoogleAccountTooltipInfo() {
       <div className="opacity-50">Ritik Khatri</div>
       <div className="opacity-50">khatri.ritik16@gmail.com</div>
     </div>
+  );
+}
+
+export function AllGoogleApps() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger className="rounded-full p-[4px] hover:bg-slate-400/50 transition-all duration-300 ">
+          <Image
+            src={"/9.png"}
+            className="p-[4px]"
+            alt="9dot"
+            height={32}
+            width={32}
+          />
+        </TooltipTrigger>
+        <TooltipContent className="bg-slate-800 border-none">
+          Google apps
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+export function CurrentUserInfo() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <div className="p-[4px]">
+            <div className="flex items-center hover:ring-4 ring-slate-400/50 transition-all duration-300 justify-center h-[40px] p-[8px] w-[40px] rounded-full bg-violet-700 text-white font-semibold text-[15px]">
+              R
+            </div>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent className="bg-slate-800 border-none">
+          <GoogleAccountTooltipInfo />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

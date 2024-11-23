@@ -1,11 +1,11 @@
 import Image from "next/image";
-import Searchbar from "./common-components/searchbar";
-import LanguageSwitch from "./common-components/Languageswitch";
+import Searchbar from "../common-components/searchbar";
+import LanguageSwitch from "../common-components/Languageswitch";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center">
-      <div className="flex max-h-[92px] h-full">
+      <div className="flex max-h-[92px] h-full mt-[198px]">
         <Image
           alt="Google Image"
           className="mt-auto"

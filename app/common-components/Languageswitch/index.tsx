@@ -18,7 +18,7 @@ export default function LanguageSwitch() {
         <span key={language.name}>
           <a
             href={`#${language.name}`}
-            className="text-blue-600 hover:underline"
+            className="text-blue-600 hover:underline px-[3px]"
           >
             {language.title}
           </a>
