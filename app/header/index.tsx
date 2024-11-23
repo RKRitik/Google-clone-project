@@ -16,7 +16,7 @@ export default function Header() {
   ];
   return (
     <div className="w-full text-[14px] text-[#E8E8E8] p-[6px]">
-      <div className="flex flex-col md:justify-around sm:flex-col md:flex-row lg:justify-between">
+      <div className="flex justify-between">
         <div className="flex justify-center  items-center gap-[10px] md:justify-start pl-[15px]">
           {links1.map((link) => (
             <a href={link.link} className="hover:underline" key={link.name}>

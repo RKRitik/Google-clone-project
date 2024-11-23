@@ -12,7 +12,7 @@ export default function LanguageSwitch() {
   ];
 
   return (
-    <div>
+    <div className="text-[13px]">
       Google offered in:
       {languages.map((language, index) => (
         <span key={language.name}>
