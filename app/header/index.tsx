@@ -1,4 +1,10 @@
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 export default function Header() {
   const links1 = [
     { name: "About", link: "/ll" },
@@ -24,12 +30,45 @@ export default function Header() {
               {link.name}
             </a>
           ))}
-          <Image src={"/9dot.png"} alt="9dot" height={32} width={32} />
-          <div className="flex items-center justify-center h-[40px] p-[8px] w-[40px] rounded-full bg-violet-700 text-white font-semibold text-[15px]">
-            R
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="rounded-full p-[4px] hover:bg-slate-400/50 transition-all duration-300 ">
+                <Image
+                  src={"/9.png"}
+                  className="p-[4px]"
+                  alt="9dot"
+                  height={32}
+                  width={32}
+                />
+              </TooltipTrigger>
+              <TooltipContent className="bg-slate-800 border-none">
+                Google apps
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="flex items-center hover:ring-4 ring-slate-400/50 transition-all duration-300 justify-center h-[40px] p-[8px] w-[40px] rounded-full bg-violet-700 text-white font-semibold text-[15px]">
+                  R
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="bg-slate-800 border-none">
+                <GoogleAccountTooltipInfo />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
+    </div>
+  );
+}
+function GoogleAccountTooltipInfo() {
+  return (
+    <div className="border-none">
+      <div>Google Account</div>
+      <div className="opacity-50">Ritik Khatri</div>
+      <div className="opacity-50">khatri.ritik16@gmail.com</div>
     </div>
   );
 }

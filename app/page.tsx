@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Searchbar from "./components/searchbar";
-import LanguageSwitch from "./components/Languageswitch";
+import Searchbar from "./common-components/searchbar";
+import LanguageSwitch from "./common-components/Languageswitch";
 
 export default function Home() {
   return (
