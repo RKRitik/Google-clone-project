@@ -117,78 +117,77 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
   );
   const [trending, setTrending] = useState<string[]>([]);
 
-  // Fetch recommendations
-  const fetchRecommendations = useCallback(
-    async (query: string, limit: number) => {
-      if (!query.trim()) {
-        setRecommendations([]);
-        return 0;
-      }
+  const debouncedFetch = useMemo(() => {
+    return debounce((query: string, limit: number) => {
+      fetchRecommendations(query, limit);
+    }, 400);
+  }, []);
+
+  const fetchRecommendations = async (
+    query: string,
+    limit: number
+  ): Promise<number> => {
+    if (!query.trim()) {
+      setRecommendations([]);
+      return 0;
+    }
+    try {
+      const response = await fetch(
+        `https://api.datamuse.com/words?ml=${query}&max=${limit}`
+      );
+      const data = await response.json();
+      setRecommendations(data);
+      return data.length; // Return the count of recommendations
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+      setRecommendations([]);
+      return 0;
+    }
+  };
+  // Fetch trending words
+  const fetchTrendingWords = useCallback(
+    async (limit: number, searchQuery?: string) => {
       try {
         const response = await fetch(
-          `https://api.datamuse.com/words?ml=${query}&max=${limit}`
+          `https://dummyjson.com/products/search?q=${
+            searchQuery || ""
+          }&limit=${limit}`
         );
-        const data = await response.json();
-        setRecommendations(data);
-        return data.length;
+        let data = await response.json();
+        data = data.products?.map(
+          (product: { id: number; title: string }) => product.title
+        );
+        setTrending(data.slice(0, limit));
       } catch (error) {
-        console.error("Error fetching recommendations:", error);
-        setRecommendations([]);
-        return 0;
+        console.error("Error fetching trending words:", error);
+        setTrending([]);
       }
     },
     []
   );
 
-  // Debounced fetch function
-  const debouncedFetch = useMemo(
-    () =>
-      debounce(
-        (query: string, limit: number) => fetchRecommendations(query, limit),
-        400
-      ),
-    [fetchRecommendations]
-  );
-
-  // Fetch trending words
-  const fetchTrendingWords = useCallback(async (limit: number) => {
-    try {
-      const response = await fetch(
-        `https://random-word-api.herokuapp.com/word?number=${limit}`
-      );
-      const data = await response.json();
-      setTrending(data.slice(0, MAX_LIST_ITEMS));
-    } catch (error) {
-      console.error("Error fetching trending words:", error);
-      setTrending([]);
-    }
-  }, []);
-
   useEffect(() => {
-    const updateLists = () => {
+    const updateLists = async () => {
       const localResults = searchFromLs(searchQuery || "", MAX_LIST_ITEMS);
       setLocalSearchSaved(localResults);
-
-      const remainingSlots = MAX_LIST_ITEMS - localResults.length;
-      if (remainingSlots > 0) {
-        debouncedFetch(searchQuery, remainingSlots);
-
-        const fetchTrendingIfNecessary = async () => {
-          const updatedRecommendations = await fetchRecommendations(
-            searchQuery,
-            remainingSlots
-          );
-          const newRemainingSlots = remainingSlots - updatedRecommendations;
-          if (newRemainingSlots > 1) {
-            fetchTrendingWords(newRemainingSlots - 1);
-          }
-        };
-        fetchTrendingIfNecessary();
+      let remainingSlots = MAX_LIST_ITEMS - localResults.length;
+      console.log({ remainingSlots });
+      if (remainingSlots > 2) {
+        const recommendationCount = await fetchRecommendations(
+          searchQuery,
+          remainingSlots
+        );
+        console.log({ recommendationCount });
+        remainingSlots -= recommendationCount;
+        console.log({ remainingSlots });
+        if (remainingSlots > 2) {
+          fetchTrendingWords(remainingSlots - 2, searchQuery);
+        }
       }
     };
 
     updateLists();
-  }, [searchQuery, debouncedFetch, fetchTrendingWords, fetchRecommendations]);
+  }, [searchQuery, debouncedFetch]);
 
   const handleDelete = (val: string) => {
     deleteKeywordFromLS(val); // Delete from local storage
