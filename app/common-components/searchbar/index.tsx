@@ -1,10 +1,11 @@
-"use client";
+"use client"; // Add this line at the top
 import MicIcon from "@/public/mic_icon.svg";
 import LensIcon from "@/public/lens_icon.svg";
 import SearchIcon from "@/public/search_icon.svg";
 import ClockIcon from "@/public/clock.svg";
 import Trending from "@/public/trending.svg";
 
+import { useRouter } from "next/navigation";
 import { useOnClickOutside } from "usehooks-ts";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -24,13 +25,14 @@ import {
 
 export default function Searchbar() {
   const [query, setQuery] = useState("");
+  const router = useRouter();
 
   function onSearch() {
     if (!query) {
       return;
     }
     addSearchToLs(query);
-    window.location.replace(`/search?q=${query}`);
+    router.push(`/search?q=${query}`);
   }
 
   return (
@@ -71,8 +73,11 @@ export function SearchInput({
 }) {
   const ref = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const router = useRouter();
 
-  function handleMic() {}
+  function handleMic() {
+    router.push("/lens");
+  }
   function handleFocus() {
     setDropdownOpen(true);
   }
@@ -117,6 +122,7 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
   const [localSearchSaved, setLocalSearchSaved] = useState<string[]>(() =>
     searchFromLs("", MAX_LIST_ITEMS)
   );
+  const router = useRouter();
   const [trending, setTrending] = useState<string[]>([]);
 
   const debouncedFetch = useMemo(() => {
@@ -204,7 +210,7 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
       return;
     }
     addSearchToLs(text);
-    window.location.replace(`/search?q=${text}`);
+    router.replace(`/search?q=${text}`);
   }
 
   return (

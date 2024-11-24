@@ -40,7 +40,7 @@ function FeedbackBanner() {
   );
 }
 
-const generateImageSearchResults = async (responseCount = 2) => {
+const generateImageSearchResults = async (responseCount = 50) => {
   const randomColor = () =>
     Math.floor(Math.random() * 16777215)
       .toString(16)
