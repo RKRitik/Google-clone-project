@@ -29,7 +29,7 @@ A simple Google Search clone built with **Next.js**, implementing features like 
 2. Navigate to project directory\
    `cd google-clone`
 3. Install dependencies:\
-   `git clone https://github.com/your-username/google-clone.git`
+   `npm i --legacy-peer-deps`
 4. Start the development server\
    `cd google-clone`
 5. Open your browser at http://localhost:3000.
