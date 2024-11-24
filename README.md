@@ -32,7 +32,8 @@ A simple Google Search clone built with **Next.js**, implementing features like 
    `npm i --legacy-peer-deps`
 4. Start the development server\
    `cd google-clone`
-5. Open your browser at http://localhost:3000.
+5. Open your browser at\
+   `http://localhost:3000`.
 
 ## Acknowledgments
 
