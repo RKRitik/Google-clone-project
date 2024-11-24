@@ -5,7 +5,8 @@ import SearchIcon from "@/public/search_icon.svg";
 import ClockIcon from "@/public/clock.svg";
 import Trending from "@/public/trending.svg";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useOnClickOutside } from "usehooks-ts";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import {
@@ -68,18 +69,20 @@ export function SearchInput({
   query: string;
   setQuery: (v: string) => void;
 }) {
+  const ref = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  function handleMic() {
-    alert("mic");
-  }
+
+  function handleMic() {}
   function handleFocus() {
     setDropdownOpen(true);
   }
-  function handleBlur() {
+  function handleClickOutside() {
     setDropdownOpen(false);
   }
+  useOnClickOutside(ref, handleClickOutside);
   return (
     <div
+      ref={ref}
       className={`flex relative ${
         dropdownOpen
           ? "bg-[#303134] rounded-t-[24px] "
@@ -96,7 +99,6 @@ export function SearchInput({
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        onBlur={handleBlur}
         onFocus={handleFocus}
         className={`py-[11px] shadow-sm border-none active:outline-none focus:outline-none bg-transparent w-[582px]`}
       />
@@ -171,15 +173,12 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
       const localResults = searchFromLs(searchQuery || "", MAX_LIST_ITEMS);
       setLocalSearchSaved(localResults);
       let remainingSlots = MAX_LIST_ITEMS - localResults.length;
-      console.log({ remainingSlots });
       if (remainingSlots > 2) {
         const recommendationCount = await fetchRecommendations(
           searchQuery,
           remainingSlots
         );
-        console.log({ recommendationCount });
         remainingSlots -= recommendationCount;
-        console.log({ remainingSlots });
         if (remainingSlots > 2) {
           fetchTrendingWords(remainingSlots - 2, searchQuery);
         }
@@ -208,6 +207,7 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
       <div className="h-[300px] text-[16px]">
         {localSearchSaved.map((val) => (
           <div
+            onClick={handleSearch.bind(null, val)}
             className="flex items-center py-[4px] gap-[13px] hover:bg-[#3c4043] group px-[14px] rounded-[3px]"
             key={val}
           >
@@ -220,7 +220,10 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
             />
             <span className="text-[#c58af9]">{val}</span>
             <a
-              onClick={handleDelete.bind(null, val)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(val);
+              }}
               className="cursor-pointer hidden ml-auto hover:underline text-[#e8e8e8]/50 text-[12px] group-hover:flex"
             >
               Delete
