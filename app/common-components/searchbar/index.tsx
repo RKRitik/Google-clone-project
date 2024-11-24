@@ -174,10 +174,7 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
       const localResults = searchFromLs(searchQuery || "", MAX_LIST_ITEMS);
       setLocalSearchSaved(localResults);
 
-      // Calculate remaining slots after local results
       let remainingSlots = MAX_LIST_ITEMS - localResults.length;
-      console.log("remainingSlots After local", remainingSlots);
-      // Fetch recommendations if slots are available
       let fetchedRecommendations;
       if (remainingSlots > 0) {
         fetchedRecommendations = await fetchRecommendations(
@@ -186,7 +183,6 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
         );
         remainingSlots -= fetchedRecommendations;
       }
-      console.log("remainingSlots 1 before", remainingSlots);
       if (remainingSlots > 1) {
         const trendingWordCount = remainingSlots - 1; // Reserve one row for the header
         fetchTrendingWords(trendingWordCount, searchQuery);
@@ -196,7 +192,7 @@ function SearchDropdown({ searchQuery = "" }: { searchQuery: string }) {
     };
 
     updateLists();
-  }, [searchQuery, debouncedFetch]);
+  }, [searchQuery, debouncedFetch, fetchTrendingWords]);
 
   const handleDelete = (val: string) => {
     deleteKeywordFromLS(val); // Delete from local storage

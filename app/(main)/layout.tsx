@@ -1,28 +1,12 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./../globals.css";
 import Header from "../header";
 import Footer from "../footer";
+import { Roboto } from "next/font/google";
 
-export const robotoFont = localFont({
-  src: [
-    {
-      path: "./../fonts/RobotoRegular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./../fonts/RobotoBold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./../fonts/RobotoMedium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-  ],
-  variable: "--font-roboto",
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -36,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${robotoFont.variable} antialiased`}>
+      <body className={`${roboto.className} antialiased`}>
         <Header />
         {children}
         <Footer />

@@ -37,7 +37,7 @@ export function addSearchToLs(term: string): void {
   }
 }
 
-export function searchFromLs(term?: string, max_count: number): string[] {
+export function searchFromLs(term: string, max_count: number): string[] {
   // Retrieve the existing terms from localStorage
   const storedTerms = JSON.parse(
     localStorage.getItem(LOCAL_SEARCH_KEY) || "[]"
