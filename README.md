@@ -25,7 +25,7 @@ A simple Google Search clone built with **Next.js**, implementing features like 
 ## Installation
 
 1. Clone the repository:\
-   `git clone https://github.com/your-username/google-clone.git`
+   `git clone https://github.com/RKRitik/Google-clone-project.git`
 2. Navigate to project directory\
    `cd google-clone`
 3. Install dependencies:\
